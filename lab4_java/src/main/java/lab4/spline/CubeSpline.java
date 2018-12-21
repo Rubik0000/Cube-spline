@@ -109,9 +109,13 @@ public class CubeSpline implements Function {
         double[] b = new double[count];
         double[] c = new double[count];
         double[] d = new double[count];
-        b[0] = 2 * (getStep(xTable[2], xTable[1]) + getStep(xTable[1], xTable[0]));
+        /*b[0] = 2 * (getStep(xTable[2], xTable[1]) + getStep(xTable[1], xTable[0]));
         c[0] = getStep(xTable[2], xTable[1]);
-        d[0] = 3 * ((yTable[2] - yTable[1]) / getStep(xTable[2], xTable[1]) - (yTable[1] - yTable[0]) / getStep(xTable[1], xTable[0]));
+        d[0] = 3 * ((yTable[2] - yTable[1]) / getStep(xTable[2], xTable[1]) - (yTable[1] - yTable[0]) / getStep(xTable[1], xTable[0]));*/
+
+        b[0] = -2 * getStep(xTable[1], xTable[0]);
+        c[0] = - getStep(xTable[1], xTable[0]);
+        d[0] = 3 * (leftCondition - (yTable[1] - yTable[0]) / getStep(xTable[1], xTable[0]));
 
         for (int i = 2; i < count; ++i) {
             double hi = getStep(xTable[i], xTable[i - 1]);
@@ -121,8 +125,14 @@ public class CubeSpline implements Function {
             c[i - 1] = hi;
             d[i - 1] = 3 * ((yTable[i] - yTable[i - 1]) / hi - (yTable[i - 1] - yTable[i - 2]) / hi_1);
         }
-        b[count - 1] = getStep(xTable[count - 1], xTable[count - 2]);
-        d[count - 1] = 3 * (rightCondition - (yTable[count - 1] - yTable[count - 1]) / getStep(xTable[count - 1], xTable[count - 2]));
+
+        /*b[count - 1] = 2 * (getStep(xTable[count - 2], xTable[count - 3]) + getStep(xTable[count - 1], xTable[count - 2]));
+        a[count - 1] = getStep(xTable[count - 2], xTable[count - 3]);
+        d[count - 1] = 3 * ((yTable[count - 1] - yTable[count - 2]) / getStep(xTable[count - 1], xTable[count - 2]) - (yTable[count - 2] - yTable[count - 3]) / getStep(xTable[count - 2], xTable[count - 3]));*/
+
+        a[count - 1] = getStep(xTable[count - 1], xTable[count - 2]);
+        b[count - 1] = 2 * getStep(xTable[count - 1], xTable[count - 2]);
+        d[count - 1] = 3 * (rightCondition - (yTable[count - 1] - yTable[count - 2]) / getStep(xTable[count - 1], xTable[count - 2]));
 
         Vector result;
         try {
